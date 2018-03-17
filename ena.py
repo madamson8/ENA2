@@ -10,10 +10,7 @@ class ENA(object):
             'login'
     ]
 
-    def run(self):
-        help()
-
-    def help(self):
+    def ena_help(self):
         for i in self.available_commands:
             print(i)
 
@@ -38,19 +35,22 @@ class ENA(object):
             print("Please install the Heroku CLI to contine.")
             exit()
 
-#
-# def main():
-#     conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
-#     print("Connecting to a database\n ->")
-#     conn = psycopg2.connect(conn_string)
-#     cursor = conn.cursor()
-#     print("Connected!\n")
-#     conn.close()
+    def run(self):
+        self.ena_help()
 
-# if __name__ == "__main__":
-#     main()
-#     ena = ENA()
-#     ena.run()
+
+def main():
+    conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
+    print("Connecting to a database\n ->")
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    print("Connected!\n")
+    conn.close()
+
+if __name__ == "__main__":
+    main()
+    ena = ENA()
+    ena.run()
 
 
 ena = ENA()
