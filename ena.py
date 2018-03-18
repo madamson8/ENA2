@@ -1,12 +1,6 @@
 import psycopg2
 import sys
-from passlib.hash import pbkdf2_sha256
-[]
-
-password = "asdf"
-pass_hash = pbkdf2_sha256.encrypt(password, rounds=200000, salt_size=16)
-
-
+from User import User
 
 class ENA():
     available_commands = [
@@ -40,13 +34,22 @@ class ENA():
             exit()
 
     def run(self):
+        create_user()
         self.ena_help()
 
+class create_user():
+    def create_user():
+        username = input("please enter username:")
+        password = input("please enter password:")
+        user = User(username, password, 0)
 
-class password():
-    def authenticate_user(password):
-        print("hurray")
-        return pbkdf2_sha256.verify(passsword, pass_hash)
+        cursor.execute("CREATE TABLE User (reading String not null)")
+        query = "INSERT INTO username values (?);"
+        cursor.execute(query, [username])
+        # save changes to file for next exercise
+        connection.commit()
+        connection.close()
+
 
 
 def main():
@@ -55,14 +58,24 @@ def main():
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     print("Connected!\n")
-    pass_class = password()
-    # test = input("pass:")
-    # n_test = pass_class.authenticate_user(test)
-    # print(n_test)
+
+
+    username = input("please enter username:")
+    password = input("please enter password:")
+    user = User()
+    user.user(username, password, 0,)
+
+    cursor.execute("CREATE TABLE User (reading String not null)")
+    query = "INSERT INTO username values (?);"
+    cursor.execute(query, [username])
+    # save changes to file for next exercise
+    connection.commit()
+    connection.close()
 
 
 ena = ENA()
-ena.run()
+# ena.run()
+main()
 
 
 
