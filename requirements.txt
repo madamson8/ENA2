@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 passlib==1.7.1
 psycopg2==2.7.4
-=======
-psycopg2-binary
->>>>>>> ce682b44b426df8e40aac7faa9ee3ff9c841ce84
+
+
+
