@@ -3,6 +3,7 @@ import sys
 from User import User
 
 class ENA():
+    conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
     available_commands = [
             'help',
             'login'
@@ -36,11 +37,17 @@ class ENA():
             exit()
 
     def run(self):
-        create_user()
         self.ena_help()
 
-class load_users():
-    def create_user(self, ena, conn, cursor):
+if __name__ == "__main__":
+    main()
+    ena = ENA()
+    ena.run()
+
+class Load_Users():
+    def load_users(self, ena, conn, cursor):
+        conn = psycopg2.connect(ena.conn_string)
+        cursor = conn.cursor()
         user = User()
         level = 0
         cursor.execute("SELECT * FROM Users;")
@@ -51,17 +58,13 @@ class load_users():
             level = user_info[0]
         #cursor.execute("INSERT INTO Users VALUES(2,%s,%s,%s)", (username, password, level))
         conn.commit()
+        conn.close()
         return level
 
 def main():
     ena = ENA()
-    conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
-    print("Connecting to a database\n ->")
-    conn = psycopg2.connect(conn_string)
-    cursor = conn.cursor()
-    print("Connected!\n")
+    load_users = Load_Users()
 
-    create_user_test = load_users()
-    create_user_test.create_user(ena, conn, cursor)
+    load_users.load_user(ena, conn, cursor)
 
 main()
