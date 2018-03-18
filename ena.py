@@ -8,6 +8,8 @@ class ENA():
             'login'
     ]
 
+    users = []
+
     def ena_help(self):
         for i in self.available_commands:
             print(i)
@@ -37,52 +39,29 @@ class ENA():
         create_user()
         self.ena_help()
 
-class create_user():
-    def create_user():
-        username = input("please enter username:")
-        password = input("please enter password:")
-        user = User(username, password, 0)
-
-        cursor.execute("CREATE TABLE User (reading String not null)")
-        query = "INSERT INTO username values (?);"
-        cursor.execute(query, [username])
-        # save changes to file for next exercise
-        connection.commit()
-        connection.close()
-
-
+class load_users():
+    def create_user(self, ena, conn, cursor):
+        user = User()
+        level = 0
+        cursor.execute("SELECT * FROM Users;")
+        for user_info in cursor:
+            user.user(user_info[0], user_info[1], user_info[2], user_info[3])
+            print(user_info)
+            ena.users.append(user)
+            level = user_info[0]
+        #cursor.execute("INSERT INTO Users VALUES(2,%s,%s,%s)", (username, password, level))
+        conn.commit()
+        return level
 
 def main():
+    ena = ENA()
     conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
     print("Connecting to a database\n ->")
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     print("Connected!\n")
 
+    create_user_test = load_users()
+    create_user_test.create_user(ena, conn, cursor)
 
-    username = input("please enter username:")
-    password = input("please enter password:")
-    user = User()
-    user.user(username, password, 0,)
-
-    cursor.execute("CREATE TABLE User (reading String not null)")
-    query = "INSERT INTO username values (?);"
-    cursor.execute(query, [username])
-    # save changes to file for next exercise
-    connection.commit()
-    connection.close()
-
-
-ena = ENA()
-# ena.run()
 main()
-
-
-
-
-
-    # def login():
-    #     if(pass == inputpassword):
-    #         return True
-    #     else:
-    #         return False
