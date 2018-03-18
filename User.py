@@ -1,5 +1,6 @@
 from passlib.hash import pbkdf2_sha256
-
+import psycopg2
+import getpass
 
 class User:
     id = None
@@ -37,3 +38,33 @@ class User:
     def user_login(self, test_password):
         test = pbkdf2_sha256.verify(test_password, this.password)
         return test
+
+class Edit_Users():
+    def load_users(self, ena):
+        conn = psycopg2.connect(ena.conn_string)
+        cursor = conn.cursor()
+        user = User()
+        level = 0
+        cursor.execute("SELECT * FROM Users;")
+        for user_info in cursor:
+            user.user(user_info[0], user_info[1], user_info[2], user_info[3])
+            ena.users.append(user)
+            id = user_info[0]
+        #cursor.execute("INSERT INTO Users VALUES(2,%s,%s,%s)", (username, password, level))
+        conn.commit()
+        conn.close()
+        return id
+
+    def create_user(self, ena, id):
+        user = User()
+        conn = psycopg2.connect(ena.conn_string)
+        cursor = conn.cursor()
+        username = input("username: ")
+        password = user.create_password(getpass.getpass("Password: "))
+        level = 0
+        id += 1
+        cursor.execute("INSERT INTO Users VALUES(%s,%s,%s,%s)", (id, username, password, level))
+        conn.commit()
+        conn.close()
+        user.user(id, username, password, level)
+        ena.users.append(user)

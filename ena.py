@@ -1,15 +1,26 @@
 import psycopg2
 import sys
-from User import User
+from User import User, Edit_Users
 
 class ENA():
+    ena = None
+    id = None
+    edit_users = Edit_Users()
+
     conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
+
+
+
     available_commands = [
             'help',
             'login'
     ]
 
     users = []
+    def ena(self, ena):
+        self.ena = ena
+        self.id = self.edit_users.load_users(ena)
+        self.ena.run()
 
     def ena_help(self):
         for i in self.available_commands:
@@ -38,33 +49,13 @@ class ENA():
 
     def run(self):
         self.ena_help()
-
-if __name__ == "__main__":
-    main()
-    ena = ENA()
-    ena.run()
-
-class Load_Users():
-    def load_users(self, ena, conn, cursor):
-        conn = psycopg2.connect(ena.conn_string)
-        cursor = conn.cursor()
-        user = User()
-        level = 0
-        cursor.execute("SELECT * FROM Users;")
-        for user_info in cursor:
-            user.user(user_info[0], user_info[1], user_info[2], user_info[3])
-            print(user_info)
-            ena.users.append(user)
-            level = user_info[0]
-        #cursor.execute("INSERT INTO Users VALUES(2,%s,%s,%s)", (username, password, level))
-        conn.commit()
-        conn.close()
-        return level
+        self.edit_users.create_user(self.ena, self.id)
 
 def main():
+    #emptyrn
+    print("running")
+
+if __name__ == "__main__":
     ena = ENA()
-    load_users = Load_Users()
-
-    load_users.load_user(ena, conn, cursor)
-
-main()
+    main()
+    ena.ena(ena)
