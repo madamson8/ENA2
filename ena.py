@@ -1,11 +1,14 @@
-import psycopg2
-import sys
 import os
-from User import User, Edit_Users
+from src.User import Edit_Users
+import src.Deploy
 from settings import create_tables
 import getpass
+from os.path import expanduser
+
 
 class ENA():
+    HOME = expanduser("~")
+
     running = False
 
     main_user = None
@@ -56,23 +59,6 @@ class ENA():
     def exit(self):
         print("Exiting")
 
-    def deploy(self):
-        yn = input("Do you have heroku installed? Y/n ")
-        if yn.lower() == "y":
-            print("Beginning Deployment.")
-            print("Creating siteinfo.html")
-            yn = input("I have detected your home as: " + str(Path.home()) + ".  Is this correct? Y/n ")
-            if yn.lower() == "y":
-                filepath = input("Please enter the path to the root of your project: ")
-                try:
-                    new_filepath = "" + filepath
-                    file = open(new_filepath, 'r')
-                except:
-                    pass
-                call("heroku login")
-        else:
-            print("Please install the Heroku CLI to contine.")
-            exit()
 
     def run(self):
         self.clear()
@@ -85,8 +71,9 @@ class ENA():
                     self.ena_help()
                 elif(command.lower() == "deploy"):
                     self.clear()
+                    # deploy.deploy()
                     print("----DEPLOY----")
-                    self.deploy()
+
                 elif(command.lower() == "logout"):
                     self.clear()
                     print("----LOGOUT----")

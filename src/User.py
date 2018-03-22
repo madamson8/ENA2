@@ -1,6 +1,7 @@
 from passlib.hash import pbkdf2_sha256
 import psycopg2
 import getpass
+import easygui
 
 class User:
     id = None
@@ -8,12 +9,15 @@ class User:
     password = None
     level = None
     logged_in = False
+    abs_path = ""
 
-    def user(self, id, username, password, level):
+    def user(self, id, username, password, level, abs_path):
         self.id = id
         self.username = username
         self.password = password
         self.level = level
+        self.abs_path = abs_path
+
 
     def change_level(self, level_key, level_num):
         if(pbkdf2_sha256.encrypt(level_key, rounds=200000, salt_size=16)):
@@ -47,12 +51,13 @@ class Edit_Users():
         id = 0
         level = 0
         cursor.execute("SELECT * FROM Users;")
+        # Remember to add fields added to the user constructor here.
+        # To add the fields to the column add them in settings.py
         for user_info in cursor:
             user = User()
-            user.user(user_info[0], user_info[1], user_info[2], user_info[3])
+            user.user(user_info[0], user_info[1], user_info[2], user_info[3], user_info[4])
             ena.users.append(user)
             id = user_info[0]
-        #cursor.execute("INSERT INTO Users VALUES(2,%s,%s,%s)", (username, password, level))
         conn.commit()
         conn.close()
 
@@ -66,8 +71,9 @@ class Edit_Users():
         password = user.create_password(getpass.getpass("Password: "))
         level = 0
         id += 1
-        cursor.execute("INSERT INTO Users VALUES(%s,%s,%s,%s)", (id, username, password, level))
+        abs_path = easygui.fileopenbox()
+        cursor.execute("INSERT INTO Users VALUES(%s,%s,%s,%s,%s)", (id, username, password, level, abs_path))
         conn.commit()
         conn.close()
-        user.user(id, username, password, level)
+        user.user(id, username, password, level, abs_path)
         ena.users.append(user)
