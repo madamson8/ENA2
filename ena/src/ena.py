@@ -1,24 +1,30 @@
 import os
-from User import Edit_Users
-from deploy import Deploy
-from settings import create_tables
-from Commands import Commands
+from src.Edit_Users import Edit_Users
+from src.User import User
+from src.Commands import Commands
+from src.deploy import Deploy
+from src.Scheduler import Scheduler
+from src.settings import create_tables
 import getpass
 from os.path import expanduser
 
 
 class ENA():
     HOME = expanduser("~")
-
-    # Creating Objects
-    edit_users = Edit_Users()
-    commands = Commands()
-    deploy = Deploy()
     # Booleans
     running = False
     # Objects
+    edit_users = Edit_Users()
+    commands = Commands()
+    deploy = Deploy()
+    scheduler = Scheduler()
+
     main_user = None
     ena = None
+    # edit_users = None
+    # commands = None
+    # deploy = None
+    # scheduler = None
     id = None
     # Strings
     conn_string = "host='localhost' dbname='enabrain' user='postgres' password='BrightBridge1'"
@@ -31,7 +37,7 @@ class ENA():
         self.ena = ena
         #Creates the commands
         self.edit_users.Edit_Users(ena)
-        self.commands.commands(self.ena, self.deploy)
+        self.commands.commands(self.ena, self.deploy, self.scheduler)
         try:
             #Checks if there is a table, if so, it loads the users
             self.id = self.edit_users.load_users()
@@ -128,7 +134,3 @@ class ENA():
         while(self.running):
             self.commands.test_commands(command)
             command = input("How may I assist you today: ")
-
-
-ena = ENA()
-ena.ena(ena)

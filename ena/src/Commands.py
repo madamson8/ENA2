@@ -1,25 +1,24 @@
 import sys
 import os
-from User import User, Edit_Users
-from Scheduler import Scheduler
 
 
 class Commands():
 	#objects
-	scheduler = Scheduler()
 	#vars set to null
 	ena = None
 	deploy = None
+	scheduler = None
 	#integers
 	highest_user_number = None
 
 	commands_array = {}
 
 	# constructor
-	def commands(self, ena, deploy):
+	def commands(self, ena, deploy, scheduler):
 		# created to make it possible to call user or ena without making a new instance
 		self.ena = ena
 		self.deploy = deploy
+		self.scheduler = scheduler
 		self.load_commands_abstract_user()
 
 	def load_commands_abstract_user(self):

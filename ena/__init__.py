@@ -1,5 +1,5 @@
-from src import ena
+from src.ena import ENA
 
 def instantiate():
-    ena = ENA
-    ena.main()
+    ena = ENA()
+    ena.ena(ena)
